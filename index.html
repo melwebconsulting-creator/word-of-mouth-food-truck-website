@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WORD OF MOUTH — Award Winning Los Angeles Food Truck</title>
+  <meta name="description" content="The best meals aren't advertised. They're shared. Discover Los Angeles' premier secret food truck. Authentic smash burgers, loaded street fries, and late night LA street culture." />
+
+  <!-- Google Fonts: Syne, Space Grotesk, Permanent Marker, Bebas Neue -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body class="bg-dark text-light overflow-x-hidden selection:bg-orange selection:text-black">
+
+  <!-- Custom Cursor Elements -->
+  <div id="cursor-dot" class="cursor-dot"></div>
+  <div id="cursor-ring" class="cursor-ring"></div>
+  <div id="cursor-spray" class="cursor-spray"></div>
+
+  <!-- Ambient Audio Indicator / Sound Toggle Button -->
+  <button id="sound-toggle" class="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-black/80 backdrop-blur-md border border-yellow/30 px-4 py-2.5 rounded-full shadow-2xl text-xs font-mono uppercase tracking-widest text-yellow hover:border-yellow hover:scale-105 transition-all group">
+    <span class="w-2.5 h-2.5 rounded-full bg-yellow animate-ping"></span>
+    <i data-lucide="volume-2" class="w-4 h-4 text-orange group-hover:rotate-12 transition-transform"></i>
+    <span id="sound-label">Street Ambience: OFF</span>
+  </button>
+
+  <!-- Preloader Screen -->
+  <div id="preloader" class="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center p-6 transition-opacity duration-700">
+    <div class="relative w-full max-w-md text-center">
+      <div class="inline-block relative mb-6">
+        <span class="font-display text-5xl md:text-7xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-orange via-yellow to-blue animate-pulse">
+          WORD OF MOUTH
+        </span>
+        <span class="absolute -top-3 -right-6 bg-red text-black font-marker text-xs px-2 py-0.5 rotate-12 uppercase rounded">LA '26</span>
+      </div>
+      <div class="font-mono text-sm uppercase text-gray-400 tracking-widest mb-3">
+        [ ARRIVING AT DOWNTOWN LA ]
+      </div>
+      <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden relative p-0.5 border border-gray-700">
+        <div id="loader-bar" class="bg-gradient-to-r from-orange via-yellow to-green h-full w-0 rounded-full transition-all duration-300"></div>
+      </div>
+      <div class="flex justify-between font-mono text-xs text-yellow mt-2">
+        <span id="loader-status">STARTING IGNITION...</span>
+        <span id="loader-percent">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Top Navigation -->
+  <header id="navbar" class="fixed top-0 left-0 w-full z-40 transition-all duration-300 py-4 px-6 md:px-12">
+    <div class="max-w-7xl mx-auto flex items-center justify-between bg-black/60 backdrop-blur-lg border border-white/10 rounded-2xl px-6 py-3 shadow-2xl">
+      <!-- Brand Logo -->
+      <a href="#hero" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 bg-gradient-to-tr from-orange to-yellow rounded-xl flex items-center justify-center text-black font-extrabold font-display text-xl transform group-hover:rotate-6 group-hover:scale-110 transition-transform shadow-lg shadow-orange/30">
+          WM
+        </div>
+        <div>
+          <span class="font-display font-extrabold text-lg md:text-xl tracking-tight text-white block leading-none">
+            WORD OF MOUTH
+          </span>
+          <span class="font-mono text-[10px] text-yellow uppercase tracking-widest flex items-center gap-1 mt-0.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-green animate-pulse"></span>
+            LOS ANGELES, CA
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden lg:flex items-center gap-8 font-mono text-xs uppercase tracking-wider">
+        <a href="#meet-truck" class="nav-link text-gray-300 hover:text-orange transition-colors">The Truck</a>
+        <a href="#menu" class="nav-link text-gray-300 hover:text-yellow transition-colors">Menu Drops</a>
+        <a href="#behind-grill" class="nav-link text-gray-300 hover:text-orange transition-colors">Behind The Grill</a>
+        <a href="#gallery" class="nav-link text-gray-300 hover:text-blue transition-colors">LA Gallery</a>
+        <a href="#schedule" class="nav-link text-gray-300 hover:text-green transition-colors">Truck Radar</a>
+      </nav>
+
+      <!-- CTA & Mobile Toggle -->
+      <div class="flex items-center gap-4">
+        <a href="#schedule" class="hidden sm:inline-flex items-center gap-2 bg-orange hover:bg-orange/90 text-black font-bold text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-orange/20 hover:scale-105 active:scale-95">
+          <i data-lucide="map-pin" class="w-4 h-4"></i>
+          Find The Truck
+        </a>
+        <button id="mobile-menu-btn" class="lg:hidden p-2 text-white hover:text-orange focus:outline-none">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden mt-3 bg-black/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-6 shadow-2xl flex flex-col gap-4 font-mono text-sm uppercase">
+      <a href="#meet-truck" class="mobile-nav-item text-gray-200 hover:text-orange py-2 border-b border-white/5">The Truck</a>
+      <a href="#menu" class="mobile-nav-item text-gray-200 hover:text-yellow py-2 border-b border-white/5">Menu Drops</a>
+      <a href="#behind-grill" class="mobile-nav-item text-gray-200 hover:text-orange py-2 border-b border-white/5">Behind The Grill</a>
+      <a href="#gallery" class="mobile-nav-item text-gray-200 hover:text-blue py-2 border-b border-white/5">LA Gallery</a>
+      <a href="#schedule" class="mobile-nav-item text-gray-200 hover:text-green py-2 border-b border-white/5">Truck Radar</a>
+      <a href="#secret-pass" class="mobile-nav-item text-yellow hover:text-white py-2 flex items-center justify-between">
+        <span>Get Secret VIP Pass</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </a>
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION (Full-screen Cinematic Opening) ================= -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-6 overflow-hidden">
+    <!-- Interactive Background Canvas for LA Street Scene & Truck Animation -->
+    <canvas id="street-canvas" class="absolute inset-0 w-full h-full pointer-events-auto z-0"></canvas>
+
+    <!-- Visual Overlays: Vignette & Grid -->
+    <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/40 to-transparent z-1 pointer-events-none"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0)_0%,rgba(10,11,12,0.85)_100%)] z-1 pointer-events-none"></div>
+
+    <!-- Floating Draggable Urban Stickers -->
+    <div id="sticker-1" class="draggable-sticker absolute top-32 left-8 md:left-16 z-20 cursor-grab active:cursor-grabbing select-none rotate-[-8deg] hover:rotate-0 transition-transform">
+      <span class="bg-yellow text-black font-marker text-xs md:text-sm font-bold px-4 py-2 rounded-lg shadow-xl border-2 border-black block uppercase tracking-wider">
+        🔥 NO RESERVATIONS
+      </span>
+    </div>
+
+    <div id="sticker-2" class="draggable-sticker absolute bottom-28 left-12 md:left-24 z-20 cursor-grab active:cursor-grabbing select-none rotate-[12deg] hover:rotate-0 transition-transform hidden sm:block">
+      <span class="bg-red text-white font-marker text-xs md:text-sm font-bold px-4 py-2 rounded-lg shadow-xl border-2 border-black block uppercase tracking-wider">
+        📍 ARTS DISTRICT 10PM
+      </span>
+    </div>
+
+    <div id="sticker-3" class="draggable-sticker absolute top-36 right-8 md:right-20 z-20 cursor-grab active:cursor-grabbing select-none rotate-[6deg] hover:rotate-0 transition-transform">
+      <span class="bg-blue text-black font-marker text-xs md:text-sm font-bold px-4 py-2 rounded-lg shadow-xl border-2 border-black block uppercase tracking-wider">
+        ⚡ 100% UNFILTERED LA
+      </span>
+    </div>
+
+    <!-- Hero Content Box -->
+    <div class="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center">
+      <!-- Status Badge -->
+      <div class="inline-flex items-center gap-2 bg-black/80 backdrop-blur-md border border-orange/40 text-orange px-4 py-2 rounded-full text-xs font-mono uppercase tracking-widest mb-8 shadow-2xl animate-bounce">
+        <span class="w-2.5 h-2.5 rounded-full bg-green animate-ping"></span>
+        <span>LIVE NOW • ARTS DISTRICT YARD • SERVING TILL 2 AM</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold tracking-tight text-white uppercase leading-[0.9] mb-6 drop-shadow-2xl">
+        THE BEST MEALS<br />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange via-yellow to-red font-marker italic tracking-normal">AREN'T ADVERTISED.</span><br />
+        THEY'RE SHARED.
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="max-w-2xl font-body text-gray-300 text-base sm:text-lg md:text-xl font-normal mb-10 leading-relaxed px-4">
+        Los Angeles' worst kept culinary secret. No billboards. No paid influencers. Just legendary smash burgers, loaded street fries, and word of mouth.
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto px-4">
+        <a href="#schedule" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-orange to-yellow text-black font-extrabold text-sm uppercase tracking-widest px-8 py-4 rounded-2xl shadow-2xl shadow-orange/30 hover:scale-105 active:scale-95 transition-all group">
+          <i data-lucide="navigation" class="w-5 h-5 group-hover:rotate-45 transition-transform"></i>
+          <span>Find The Truck</span>
+        </a>
+        <a href="#menu" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-black/60 hover:bg-black/90 backdrop-blur-md border border-white/20 text-white font-bold text-sm uppercase tracking-widest px-8 py-4 rounded-2xl hover:border-yellow transition-all group">
+          <i data-lucide="utensils" class="w-5 h-5 text-yellow group-hover:scale-110 transition-transform"></i>
+          <span>See The Menu</span>
+        </a>
+      </div>
+
+      <!-- Interactive Honk & Smoke Controls -->
+      <div class="mt-12 flex items-center gap-6 text-xs font-mono uppercase text-gray-400">
+        <button id="honk-btn" class="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-xl text-yellow hover:text-white transition-all">
+          <i data-lucide="volume-1" class="w-4 h-4"></i>
+          <span>HONK TRUCK HORN</span>
+        </button>
+        <button id="lights-btn" class="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-xl text-blue hover:text-white transition-all">
+          <i data-lucide="sun" class="w-4 h-4"></i>
+          <span>TOGGLE NEON LIGHTS</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Scroll Down Indicator -->
+    <a href="#meet-truck" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 text-gray-400 hover:text-white transition-colors flex flex-col items-center gap-2 font-mono text-[10px] uppercase tracking-widest">
+      <span>SCROLL DOWN</span>
+      <i data-lucide="chevron-down" class="w-4 h-4 animate-bounce text-orange"></i>
+    </a>
+  </section>
+
+  <!-- ================= SECTION 2: MEET THE TRUCK (Asymmetrical Editorial Grid) ================= -->
+  <section id="meet-truck" class="py-24 px-6 md:px-12 max-w-7xl mx-auto relative">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Left Asymmetrical Image Box with Paper Tape & Stencil Badge -->
+      <div class="lg:col-span-6 relative">
+        <div class="relative z-10 rounded-3xl overflow-hidden border-2 border-white/10 shadow-2xl group">
+          <img src="/images/hero_truck.jpg" alt="Word of Mouth Food Truck in Los Angeles" class="w-full h-[450px] md:h-[550px] object-cover group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+          
+          <!-- Overlay Sticker Badge -->
+          <div class="absolute bottom-6 left-6 right-6 bg-black/80 backdrop-blur-md p-6 rounded-2xl border border-white/10 flex items-center justify-between">
+            <div>
+              <span class="font-mono text-xs text-yellow uppercase tracking-widest block">STEED OF FLAVOR</span>
+              <h4 class="font-display text-xl font-bold text-white">1984 Chevy P30 Stepvan</h4>
+            </div>
+            <div class="bg-orange text-black font-marker text-xs px-3 py-1.5 rounded uppercase font-bold">
+              MODIFIED '22
+            </div>
+          </div>
+        </div>
+
+        <!-- Decorative Tape Accent -->
+        <div class="absolute -top-4 -left-4 z-20 bg-yellow/80 text-black font-mono text-[10px] px-6 py-1 uppercase tracking-widest rotate-[-6deg] shadow-md border border-black">
+          [ AUTHENTIC LA STREET ENGINE ]
+        </div>
+
+        <div class="absolute -bottom-6 -right-6 z-20 bg-red/90 text-white font-marker text-sm px-6 py-2 uppercase tracking-widest rotate-[8deg] shadow-xl border border-black">
+          24-FT CUSTOM SMOKER
+        </div>
+      </div>
+
+      <!-- Right Editorial Story & Specs Grid -->
+      <div class="lg:col-span-6 flex flex-col justify-center">
+        <div class="inline-flex items-center gap-2 text-orange font-mono text-xs uppercase tracking-widest mb-3">
+          <span class="w-8 h-0.5 bg-orange"></span>
+          <span>THE DISCOVERY & ORIGIN</span>
+        </div>
+
+        <h2 class="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-none mb-6">
+          BORN IN AN ARTS DISTRICT ALLEYWAY.
+        </h2>
+
+        <p class="font-body text-gray-300 text-base md:text-lg leading-relaxed mb-8">
+          In 2022, three friends parked an unregistered 1984 Chevy stepvan behind a warehouse on Mateo Street. No menu boards. No signages. Just a custom hardwood smoker and a simple promise: if the food is legendary, the street will talk.
+        </p>
+
+        <!-- Spec Sheet Cards Grid -->
+        <div class="grid grid-cols-2 gap-4 mb-8">
+          <div class="bg-card p-5 rounded-2xl border border-white/10 hover:border-orange/50 transition-colors">
+            <span class="font-display text-3xl font-extrabold text-orange block mb-1">350 HP</span>
+            <span class="font-mono text-xs text-gray-400 uppercase tracking-wider">V8 Sizzle Engine</span>
+          </div>
+          <div class="bg-card p-5 rounded-2xl border border-white/10 hover:border-yellow/50 transition-colors">
+            <span class="font-display text-3xl font-extrabold text-yellow block mb-1">700°F</span>
+            <span class="font-mono text-xs text-gray-400 uppercase tracking-wider">Smoker Grill Temp</span>
+          </div>
+          <div class="bg-card p-5 rounded-2xl border border-white/10 hover:border-blue/50 transition-colors">
+            <span class="font-display text-3xl font-extrabold text-blue block mb-1">50,000+</span>
+            <span class="font-mono text-xs text-gray-400 uppercase tracking-wider">Burgers Served</span>
+          </div>
+          <div class="bg-card p-5 rounded-2xl border border-white/10 hover:border-green/50 transition-colors">
+            <span class="font-display text-3xl font-extrabold text-green block mb-1">$0.00</span>
+            <span class="font-mono text-xs text-gray-400 uppercase tracking-wider">Ad Spend</span>
+          </div>
+        </div>
+
+        <!-- Meet the Crew Subsection -->
+        <div>
+          <h4 class="font-mono text-xs text-gray-400 uppercase tracking-widest mb-4">THE CREW BEHIND THE SMOKE</h4>
+          <div class="flex items-center gap-4">
+            <div class="flex -space-x-3">
+              <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=150&q=80" alt="Chef Marcus" class="w-12 h-12 rounded-full border-2 border-orange object-cover" referrerPolicy="no-referrer" />
+              <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=150&q=80" alt="Elena" class="w-12 h-12 rounded-full border-2 border-yellow object-cover" referrerPolicy="no-referrer" />
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Leo" class="w-12 h-12 rounded-full border-2 border-blue object-cover" referrerPolicy="no-referrer" />
+            </div>
+            <div>
+              <span class="font-bold text-white text-sm block">Marcus, Elena & Leo</span>
+              <span class="font-mono text-xs text-gray-400">Head Pitmaster, Sauce Queen, & Route Director</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION 3: FAN FAVORITES (Interactive Food Vault Menu) ================= -->
+  <section id="menu" class="py-24 px-6 md:px-12 bg-black/40 border-y border-white/10 relative">
+    <div class="max-w-7xl mx-auto">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <div>
+          <div class="inline-flex items-center gap-2 text-yellow font-mono text-xs uppercase tracking-widest mb-3">
+            <span class="w-8 h-0.5 bg-yellow"></span>
+            <span>DAILY STREET DROPS</span>
+          </div>
+          <h2 class="font-display text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-none">
+            FAN FAVORITES & SECRET MENU.
+          </h2>
+        </div>
+        <p class="max-w-md text-gray-400 font-body text-sm">
+          Everything cooked fresh on-demand over white oak charcoal. When a batch sells out, it’s gone for the night.
+        </p>
+      </div>
+
+      <!-- Menu Category Filter Tabs -->
+      <div class="flex items-center gap-3 overflow-x-auto pb-4 mb-10 no-scrollbar">
+        <button data-category="all" class="menu-tab-btn active bg-orange text-black font-mono text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl font-bold transition-all whitespace-nowrap">
+          ALL DROPS
+        </button>
+        <button data-category="burgers" class="menu-tab-btn bg-card text-gray-300 hover:text-white border border-white/10 font-mono text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all whitespace-nowrap">
+          SMASH BURGERS
+        </button>
+        <button data-category="fries" class="menu-tab-btn bg-card text-gray-300 hover:text-white border border-white/10 font-mono text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all whitespace-nowrap">
+          LOADED FRIES & TACOS
+        </button>
+        <button data-category="drinks" class="menu-tab-btn bg-card text-gray-300 hover:text-white border border-white/10 font-mono text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all whitespace-nowrap">
+          CRAFT SHAKES & SIPS
+        </button>
+      </div>
+
+      <!-- Food Menu Grid -->
+      <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Item 1: Signature Smash -->
+        <div class="menu-card group bg-card rounded-3xl border border-white/10 overflow-hidden hover:border-orange/60 transition-all duration-300 flex flex-col" data-category="burgers">
+          <div class="relative h-64 overflow-hidden">
+            <img src="/images/hero_burger.jpg" alt="Double Mouth Smash Burger" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" referrerPolicy="no-referrer" />
+            <span class="absolute top-4 left-4 bg-orange text-black font-marker text-xs px-3 py-1 rounded shadow-lg uppercase font-bold">
+              WORD OF MOUTH #1
+            </span>
+            <span class="absolute top-4 right-4 bg-black/80 backdrop-blur-md text-yellow font-mono text-sm font-bold px-3 py-1 rounded-full border border-yellow/30">
+              $14.50
+            </span>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-2 text-xs font-mono text-orange uppercase tracking-wider mb-2">
+                <span>🔥 2x Angus Beef • White Oak Smoked</span>
+              </div>
+              <h3 class="font-display text-2xl font-bold text-white mb-2 group-hover:text-orange transition-colors">
+                The Double Mouth Smash
+              </h3>
+              <p class="text-gray-400 text-sm font-body mb-4 line-clamp-2">
+                Twin crispy-edge Prime Angus beef patties, double sharp American cheddar, caramelized shallots, house pickles, and secret orange sauce on grilled brioche.
+              </p>
+            </div>
+            <button class="add-craving-btn w-full bg-white/10 hover:bg-orange hover:text-black text-white font-mono text-xs uppercase tracking-widest font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2" data-name="The Double Mouth Smash" data-price="14.50">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Add To Craving List</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 2: Loaded Street Fries -->
+        <div class="menu-card group bg-card rounded-3xl border border-white/10 overflow-hidden hover:border-yellow/60 transition-all duration-300 flex flex-col" data-category="fries">
+          <div class="relative h-64 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=800&q=80" alt="Melrose Loaded Fries" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" referrerPolicy="no-referrer" />
+            <span class="absolute top-4 left-4 bg-yellow text-black font-marker text-xs px-3 py-1 rounded shadow-lg uppercase font-bold">
+              LA TIMES GOLD MEDAL
+            </span>
+            <span class="absolute top-4 right-4 bg-black/80 backdrop-blur-md text-yellow font-mono text-sm font-bold px-3 py-1 rounded-full border border-yellow/30">
+              $11.00
+            </span>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-2 text-xs font-mono text-yellow uppercase tracking-wider mb-2">
+                <span>🍟 Hand-Cut Kennebec Potatoes</span>
+              </div>
+              <h3 class="font-display text-2xl font-bold text-white mb-2 group-hover:text-yellow transition-colors">
+                Melrose Alley Loaded Fries
+              </h3>
+              <p class="text-gray-400 text-sm font-body mb-4 line-clamp-2">
+                Double-fried Kennebec potatoes smothered in liquid gold cheddar, chopped smoked brisket, grilled jalapenos, cilantro, and garlic chili crema.
+              </p>
+            </div>
+            <button class="add-craving-btn w-full bg-white/10 hover:bg-yellow hover:text-black text-white font-mono text-xs uppercase tracking-widest font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2" data-name="Melrose Alley Loaded Fries" data-price="11.00">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Add To Craving List</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 3: Street Tacos -->
+        <div class="menu-card group bg-card rounded-3xl border border-white/10 overflow-hidden hover:border-red/60 transition-all duration-300 flex flex-col" data-category="fries">
+          <div class="relative h-64 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80" alt="Arts District Birria Tacos" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" referrerPolicy="no-referrer" />
+            <span class="absolute top-4 left-4 bg-red text-white font-marker text-xs px-3 py-1 rounded shadow-lg uppercase font-bold">
+              SPICY 3X
+            </span>
+            <span class="absolute top-4 right-4 bg-black/80 backdrop-blur-md text-yellow font-mono text-sm font-bold px-3 py-1 rounded-full border border-yellow/30">
+              $13.50
+            </span>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-2 text-xs font-mono text-red uppercase tracking-wider mb-2">
+                <span>🌮 24-Hour Braised Beef Birria</span>
+              </div>
+              <h3 class="font-display text-2xl font-bold text-white mb-2 group-hover:text-red transition-colors">
+                Arts District Birria Tacos
+              </h3>
+              <p class="text-gray-400 text-sm font-body mb-4 line-clamp-2">
+                Trio of crispy chili-dipped corn tortillas stuffed with melted Oaxaca cheese, slow-braised beef birria, pickled red onions, and rich consommé dip.
+              </p>
+            </div>
+            <button class="add-craving-btn w-full bg-white/10 hover:bg-red hover:text-white text-white font-mono text-xs uppercase tracking-widest font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2" data-name="Arts District Birria Tacos" data-price="13.50">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Add To Craving List</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 4: Venice Sunset Sliders -->
+        <div class="menu-card group bg-card rounded-3xl border border-white/10 overflow-hidden hover:border-blue/60 transition-all duration-300 flex flex-col" data-category="burgers">
+          <div class="relative h-64 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80" alt="Venice Sunset Sliders" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" referrerPolicy="no-referrer" />
+            <span class="absolute top-4 left-4 bg-blue text-black font-marker text-xs px-3 py-1 rounded shadow-lg uppercase font-bold">
+              FAN FAVORITE
+            </span>
+            <span class="absolute top-4 right-4 bg-black/80 backdrop-blur-md text-yellow font-mono text-sm font-bold px-3 py-1 rounded-full border border-yellow/30">
+              $12.50
+            </span>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-2 text-xs font-mono text-blue uppercase tracking-wider mb-2">
+                <span>🌴 Trio Slider Drop</span>
+              </div>
+              <h3 class="font-display text-2xl font-bold text-white mb-2 group-hover:text-blue transition-colors">
+                Venice Boardwalk Sliders
+              </h3>
+              <p class="text-gray-400 text-sm font-body mb-4 line-clamp-2">
+                Three mini brioche sliders with smashed wagyu patties, smoked gouda, avocado smash, and tangy chipotle honey reduction.
+              </p>
+            </div>
+            <button class="add-craving-btn w-full bg-white/10 hover:bg-blue hover:text-black text-white font-mono text-xs uppercase tracking-widest font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2" data-name="Venice Boardwalk Sliders" data-price="12.50">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Add To Craving List</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 5: Ghost Chili Chicken Sandwich -->
+        <div class="menu-card group bg-card rounded-3xl border border-white/10 overflow-hidden hover:border-orange/60 transition-all duration-300 flex flex-col" data-category="burgers">
+          <div class="relative h-64 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=800&q=80" alt="Hot Chicken Sandwich" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" referrerPolicy="no-referrer" />
+            <span class="absolute top-4 left-4 bg-orange text-black font-marker text-xs px-3 py-1 rounded shadow-lg uppercase font-bold">
+              EXTRA CRISPY
+            </span>
+            <span class="absolute top-4 right-4 bg-black/80 backdrop-blur-md text-yellow font-mono text-sm font-bold px-3 py-1 rounded-full border border-yellow/30">
+              $13.00
+            </span>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-2 text-xs font-mono text-orange uppercase tracking-wider mb-2">
+                <span>🍗 Buttermilk Fried Chicken</span>
+              </div>
+              <h3 class="font-display text-2xl font-bold text-white mb-2 group-hover:text-orange transition-colors">
+                Echo Park Ghost Hot Chicken
+              </h3>
+              <p class="text-gray-400 text-sm font-body mb-4 line-clamp-2">
+                Jumbo buttermilk brined fried chicken thigh dunked in Nashville-style ghost pepper oil, purple cabbage slaw, and dill pickles.
+              </p>
+            </div>
+            <button class="add-craving-btn w-full bg-white/10 hover:bg-orange hover:text-black text-white font-mono text-xs uppercase tracking-widest font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2" data-name="Echo Park Ghost Hot Chicken" data-price="13.00">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Add To Craving List</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 6: Smoked Churro Milkshake -->
+        <div class="menu-card group bg-card rounded-3xl border border-white/10 overflow-hidden hover:border-green/60 transition-all duration-300 flex flex-col" data-category="drinks">
+          <div class="relative h-64 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=800&q=80" alt="Smoked Churro Shake" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" referrerPolicy="no-referrer" />
+            <span class="absolute top-4 left-4 bg-green text-black font-marker text-xs px-3 py-1 rounded shadow-lg uppercase font-bold">
+              SWEET DROPS
+            </span>
+            <span class="absolute top-4 right-4 bg-black/80 backdrop-blur-md text-yellow font-mono text-sm font-bold px-3 py-1 rounded-full border border-yellow/30">
+              $8.50
+            </span>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-2 text-xs font-mono text-green uppercase tracking-wider mb-2">
+                <span>🥤 Vanilla Bean & Cinnamon Dust</span>
+              </div>
+              <h3 class="font-display text-2xl font-bold text-white mb-2 group-hover:text-green transition-colors">
+                Smoked Vanilla Churro Shake
+              </h3>
+              <p class="text-gray-400 text-sm font-body mb-4 line-clamp-2">
+                Thick house-spun vanilla bean gelato blended with smoked cinnamon cajeta, topped with a fresh warm crispy churro loop.
+              </p>
+            </div>
+            <button class="add-craving-btn w-full bg-white/10 hover:bg-green hover:text-black text-white font-mono text-xs uppercase tracking-widest font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2" data-name="Smoked Vanilla Churro Shake" data-price="8.50">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Add To Craving List</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Floating Craving List Bar -->
+      <div id="craving-bar" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-black/90 backdrop-blur-xl border border-yellow/40 rounded-full px-6 py-3 shadow-2xl items-center gap-6">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-yellow text-black font-extrabold font-mono text-xs flex items-center justify-center" id="craving-count">
+            0
+          </div>
+          <span class="font-mono text-xs uppercase text-white font-bold">Craving Bag</span>
+        </div>
+        <div class="font-mono text-sm font-bold text-yellow" id="craving-total">
+          $0.00
+        </div>
+        <button id="checkout-btn" class="bg-gradient-to-r from-orange to-yellow text-black font-extrabold text-xs uppercase tracking-wider px-5 py-2 rounded-full hover:scale-105 transition-transform">
+          Simulate Pickup Drop
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION 4: BEHIND THE GRILL (Sensory Sizzle) ================= -->
+  <section id="behind-grill" class="py-24 px-6 md:px-12 relative overflow-hidden bg-gradient-to-b from-dark via-black to-dark">
+    <!-- Ambient Flame Glow background -->
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-orange/15 rounded-full blur-[140px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- Left: Sensory Sizzle Content -->
+        <div class="lg:col-span-5">
+          <div class="inline-flex items-center gap-2 text-red font-mono text-xs uppercase tracking-widest mb-3">
+            <span class="w-8 h-0.5 bg-red"></span>
+            <span>RAW CULINARY CRAFT</span>
+          </div>
+
+          <h2 class="font-display text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-none mb-6">
+            THE ANATOMY OF A SIZZLE.
+          </h2>
+
+          <p class="font-body text-gray-300 text-base md:text-lg mb-8 leading-relaxed">
+            We don't use electric flat-tops or frozen pre-formed pucks. Every single burger is smashed onto 700°F cast iron plates over white oak embers, locking in Maillard caramelized crusts.
+          </p>
+
+          <!-- Interactive Grill Sound Player -->
+          <div class="bg-card p-6 rounded-2xl border border-white/10 mb-8 flex items-center justify-between">
+            <div>
+              <span class="font-mono text-xs text-yellow uppercase tracking-wider block mb-1">GRILL AUDIO SIMULATOR</span>
+              <h4 class="font-bold text-white text-base">Listen To White Oak Sizzle</h4>
+            </div>
+            <button id="play-sizzle-btn" class="w-12 h-12 bg-orange hover:bg-yellow text-black rounded-full flex items-center justify-center transition-transform hover:scale-110 shadow-lg shadow-orange/30">
+              <i data-lucide="play" class="w-5 h-5 fill-current"></i>
+            </button>
+          </div>
+
+          <!-- Raw Ingredients Inspector Accordion -->
+          <div class="space-y-3">
+            <details class="bg-white/5 rounded-xl border border-white/10 p-4 cursor-pointer group">
+              <summary class="font-mono text-xs text-white uppercase tracking-wider font-bold flex justify-between items-center">
+                <span>01. PRIME ANGUS BEEF BLEND</span>
+                <i data-lucide="chevron-down" class="w-4 h-4 text-orange group-open:rotate-180 transition-transform"></i>
+              </summary>
+              <p class="text-xs text-gray-400 mt-3 font-body leading-relaxed">
+                75/25 custom blend of brisket, short rib, and chuck sourced daily from local Santa Ana ranchers.
+              </p>
+            </details>
+
+            <details class="bg-white/5 rounded-xl border border-white/10 p-4 cursor-pointer group">
+              <summary class="font-mono text-xs text-white uppercase tracking-wider font-bold flex justify-between items-center">
+                <span>02. 24-HOUR FERMENTED BRIOCHE</span>
+                <i data-lucide="chevron-down" class="w-4 h-4 text-yellow group-open:rotate-180 transition-transform"></i>
+              </summary>
+              <p class="text-xs text-gray-400 mt-3 font-body leading-relaxed">
+                Baked every morning at 4:00 AM in Boyle Heights using European butter and potato starch for cloud-like softness.
+              </p>
+            </details>
+
+            <details class="bg-white/5 rounded-xl border border-white/10 p-4 cursor-pointer group">
+              <summary class="font-mono text-xs text-white uppercase tracking-wider font-bold flex justify-between items-center">
+                <span>03. SECRET ORANGE SAUCE</span>
+                <i data-lucide="chevron-down" class="w-4 h-4 text-blue group-open:rotate-180 transition-transform"></i>
+              </summary>
+              <p class="text-xs text-gray-400 mt-3 font-body leading-relaxed">
+                14 ingredients including smoked paprika, roasted habanero vinegar, roasted garlic mayo, and direct house secret spices.
+              </p>
+            </details>
+          </div>
+
+        </div>
+
+        <!-- Right: Action Media Box -->
+        <div class="lg:col-span-7 relative">
+          <div class="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80" alt="Chef searing food on grill" class="w-full h-[500px] object-cover" referrerPolicy="no-referrer" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+            
+            <!-- Live Temperature Ticker -->
+            <div class="absolute top-6 left-6 bg-red/90 text-white font-mono text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-2 shadow-xl border border-black">
+              <span class="w-2 h-2 rounded-full bg-yellow animate-ping"></span>
+              <span>FIRE TEMP: 712°F</span>
+            </div>
+
+            <!-- Quote Overlay -->
+            <div class="absolute bottom-6 left-6 right-6 bg-black/80 backdrop-blur-md p-6 rounded-2xl border border-white/10">
+              <p class="font-marker text-yellow text-lg md:text-xl mb-2">
+                "IF YOU DON'T SEE THE FLAMES, YOU'RE NOT AT WORD OF MOUTH."
+              </p>
+              <span class="font-mono text-xs text-gray-400 uppercase tracking-widest block">
+                — MARCUS VANCE, FOUNDER & PITMASTER
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION 5: LA STREET GALLERY (Urban Photo Grid) ================= -->
+  <section id="gallery" class="py-24 px-6 md:px-12 bg-dark relative">
+    <div class="max-w-7xl mx-auto">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <div>
+          <div class="inline-flex items-center gap-2 text-blue font-mono text-xs uppercase tracking-widest mb-3">
+            <span class="w-8 h-0.5 bg-blue"></span>
+            <span>UNCENSORED LA CULTURE</span>
+          </div>
+          <h2 class="font-display text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-none">
+            STREET GALLERY & VIBES.
+          </h2>
+        </div>
+        
+        <!-- Gallery Filter Buttons -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+          <button data-gallery-filter="all" class="gallery-filter-btn active bg-blue text-black font-mono text-xs uppercase px-4 py-2 rounded-lg font-bold">ALL</button>
+          <button data-gallery-filter="murals" class="gallery-filter-btn bg-card text-gray-400 hover:text-white font-mono text-xs uppercase px-4 py-2 rounded-lg">MURALS</button>
+          <button data-gallery-filter="late-night" class="gallery-filter-btn bg-card text-gray-400 hover:text-white font-mono text-xs uppercase px-4 py-2 rounded-lg">LATE NIGHT</button>
+          <button data-gallery-filter="crowd" class="gallery-filter-btn bg-card text-gray-400 hover:text-white font-mono text-xs uppercase px-4 py-2 rounded-lg">THE CROWD</button>
+        </div>
+      </div>
+
+      <!-- Asymmetrical Masonry Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="gallery-grid">
+        <!-- Shot 1 -->
+        <div class="gallery-item group relative h-80 rounded-2xl overflow-hidden cursor-pointer border border-white/10" data-tag="murals" data-img="https://images.unsplash.com/photo-1580655653885-65763b2597d0?auto=format&fit=crop&w=1200&q=80" data-title="Arts District Graffiti Wall">
+          <img src="https://images.unsplash.com/photo-1580655653885-65763b2597d0?auto=format&fit=crop&w=800&q=80" alt="LA Wall Art" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
+          <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+            <div>
+              <span class="font-mono text-[10px] text-blue uppercase tracking-widest">MELROSE & MATEO</span>
+              <h4 class="font-bold text-white text-sm">Arts District Murals</h4>
+            </div>
+            <i data-lucide="maximize-2" class="w-4 h-4 text-yellow opacity-0 group-hover:opacity-100 transition-opacity"></i>
+          </div>
+        </div>
+
+        <!-- Shot 2 -->
+        <div class="gallery-item group relative h-80 rounded-2xl overflow-hidden cursor-pointer border border-white/10" data-tag="late-night" data-img="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80" data-title="2 AM Midnight Drop Line">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Late Night Street Market" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
+          <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+            <div>
+              <span class="font-mono text-[10px] text-yellow uppercase tracking-widest">ECHO PARK 2 AM</span>
+              <h4 class="font-bold text-white text-sm">Midnight Foodies</h4>
+            </div>
+            <i data-lucide="maximize-2" class="w-4 h-4 text-yellow opacity-0 group-hover:opacity-100 transition-opacity"></i>
+          </div>
+        </div>
+
+        <!-- Shot 3 -->
+        <div class="gallery-item group relative h-80 rounded-2xl overflow-hidden cursor-pointer border border-white/10" data-tag="crowd" data-img="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80" data-title="Friends Sharing Food">
+          <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80" alt="Friends Eating Outdoors" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
+          <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+            <div>
+              <span class="font-mono text-[10px] text-green uppercase tracking-widest">VENICE BOARDWALK</span>
+              <h4 class="font-bold text-white text-sm">The Sunset Gathering</h4>
+            </div>
+            <i data-lucide="maximize-2" class="w-4 h-4 text-yellow opacity-0 group-hover:opacity-100 transition-opacity"></i>
+          </div>
+        </div>
+
+        <!-- Shot 4 -->
+        <div class="gallery-item group relative h-80 rounded-2xl overflow-hidden cursor-pointer border border-white/10" data-tag="late-night" data-img="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1200&q=80" data-title="Sizzle Double Smash Closeup">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80" alt="Juicy Smash Burger" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
+          <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+            <div>
+              <span class="font-mono text-[10px] text-orange uppercase tracking-widest">SIZZLE CAMERA</span>
+              <h4 class="font-bold text-white text-sm">Double Smash Sear</h4>
+            </div>
+            <i data-lucide="maximize-2" class="w-4 h-4 text-yellow opacity-0 group-hover:opacity-100 transition-opacity"></i>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Lightbox Modal for Gallery Images -->
+  <div id="gallery-lightbox" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl hidden items-center justify-center p-6">
+    <button id="close-lightbox" class="absolute top-6 right-6 text-white hover:text-orange p-2">
+      <i data-lucide="x" class="w-8 h-8"></i>
+    </button>
+    <div class="max-w-4xl w-full text-center">
+      <div class="relative rounded-2xl overflow-hidden border border-white/20 mb-4 shadow-2xl">
+        <img id="lightbox-img" src="" alt="Full view" class="w-full max-h-[75vh] object-contain mx-auto" referrerPolicy="no-referrer" />
+        <div class="absolute bottom-4 left-4 bg-black/80 backdrop-blur-md px-4 py-2 rounded-lg text-xs font-mono text-yellow uppercase border border-yellow/30">
+          ISO 800 • f/1.8 • 1/250s
+        </div>
+      </div>
+      <h3 id="lightbox-title" class="font-display text-2xl font-bold text-white"></h3>
+    </div>
+  </div>
+
+  <!-- ================= SECTION 6: AWARDS & STREET RUMORS ================= -->
+  <section id="awards" class="py-20 bg-black border-y border-white/10 relative overflow-hidden">
+    <!-- Sliding Marquee Banner -->
+    <div class="marquee-wrapper overflow-hidden whitespace-nowrap py-4 bg-gradient-to-r from-orange via-yellow to-red text-black font-display font-extrabold text-2xl md:text-3xl uppercase tracking-wider mb-16 shadow-2xl">
+      <div class="marquee-content inline-block animate-marquee">
+        🏆 AWWWARDS SITE OF THE DAY • 🏆 LA WEEKLY FOOD TRUCK OF THE YEAR '25 • 🏆 EATER LA ESSENTIAL 100 • 🏆 MICHELIN STREET GUIDE SELECTED • 🏆 NO RESERVATIONS AWARD •
+      </div>
+      <div class="marquee-content inline-block animate-marquee" aria-hidden="true">
+        🏆 AWWWARDS SITE OF THE DAY • 🏆 LA WEEKLY FOOD TRUCK OF THE YEAR '25 • 🏆 EATER LA ESSENTIAL 100 • 🏆 MICHELIN STREET GUIDE SELECTED • 🏆 NO RESERVATIONS AWARD •
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="text-center mb-12">
+        <span class="font-mono text-xs text-yellow uppercase tracking-widest block mb-2">[ WORD ON THE STREET ]</span>
+        <h2 class="font-display text-4xl sm:text-5xl font-extrabold text-white">UNFILTERED RECOMMENDATIONS</h2>
+      </div>
+
+      <!-- Testimonial / Recommendation Cards Grid -->
+      <div id="reviews-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-card p-8 rounded-3xl border border-white/10 relative hover:border-yellow/50 transition-colors">
+          <div class="text-yellow text-xl mb-4">★★★★★</div>
+          <p class="font-body text-gray-300 text-sm leading-relaxed mb-6 italic">
+            "You literally have to follow their secret drop updates or know someone who knows the pitmaster. The smash burger crispy edges are pure poetry."
+          </p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-orange text-black font-bold flex items-center justify-center font-mono text-sm">
+              JD
+            </div>
+            <div>
+              <span class="font-bold text-white text-sm block">Julian D.</span>
+              <span class="font-mono text-[10px] text-gray-400">LA Foodie & Vinyl Collector</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-card p-8 rounded-3xl border border-white/10 relative hover:border-orange/50 transition-colors">
+          <div class="text-orange text-xl mb-4">★★★★★</div>
+          <p class="font-body text-gray-300 text-sm leading-relaxed mb-6 italic">
+            "We waited 40 minutes at 1:30 AM in Arts District. Worth every second. The Melrose loaded fries reset my standard for street food."
+          </p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-yellow text-black font-bold flex items-center justify-center font-mono text-sm">
+              SK
+            </div>
+            <div>
+              <span class="font-bold text-white text-sm block">Sora K.</span>
+              <span class="font-mono text-[10px] text-gray-400">Silver Lake Creative</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-card p-8 rounded-3xl border border-white/10 relative hover:border-blue/50 transition-colors">
+          <div class="text-blue text-xl mb-4">★★★★★</div>
+          <p class="font-body text-gray-300 text-sm leading-relaxed mb-6 italic">
+            "Best street eats in Southern California. PERIOD. Their secret sauce is like gold dust."
+          </p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-blue text-black font-bold flex items-center justify-center font-mono text-sm">
+              MV
+            </div>
+            <div>
+              <span class="font-bold text-white text-sm block">Marco V.</span>
+              <span class="font-mono text-[10px] text-gray-400">Venice Local</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Recommendation Interactive Trigger -->
+      <div class="mt-12 text-center">
+        <button id="add-review-btn" class="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/20 text-yellow font-mono text-xs uppercase tracking-widest font-bold px-6 py-3 rounded-full transition-all">
+          <i data-lucide="message-square-plus" class="w-4 h-4"></i>
+          <span>Submit Your Word-Of-Mouth Recommendation</span>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Submit Recommendation Modal -->
+  <div id="review-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl hidden items-center justify-center p-6">
+    <div class="bg-card border border-white/20 max-w-lg w-full p-8 rounded-3xl shadow-2xl relative">
+      <button id="close-review-modal" class="absolute top-6 right-6 text-gray-400 hover:text-white">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+      <h3 class="font-display text-2xl font-bold text-white mb-2">Leave Your Word Of Mouth</h3>
+      <p class="text-xs text-gray-400 font-mono mb-6">Share your unfiltered thoughts with the LA street community.</p>
+      
+      <form id="review-form" class="space-y-4">
+        <div>
+          <label class="block font-mono text-xs text-gray-300 uppercase mb-1">Your Name / Handle</label>
+          <input type="text" id="review-name" required placeholder="e.g. Alex @ Venice" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-yellow" />
+        </div>
+        <div>
+          <label class="block font-mono text-xs text-gray-300 uppercase mb-1">Your Review</label>
+          <textarea id="review-text" required rows="3" placeholder="Tell us what dish blew your mind..." class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-yellow"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-gradient-to-r from-orange to-yellow text-black font-extrabold text-xs uppercase tracking-widest py-3 rounded-xl hover:scale-105 transition-transform">
+          Publish Word Of Mouth
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= SECTION 7: WHERE TO FIND US (Live Truck Radar & Map) ================= -->
+  <section id="schedule" class="py-24 px-6 md:px-12 bg-dark relative">
+    <div class="max-w-7xl mx-auto">
+      
+      <div class="text-center mb-12">
+        <div class="inline-flex items-center gap-2 text-green font-mono text-xs uppercase tracking-widest mb-3">
+          <span class="w-2 h-2 rounded-full bg-green animate-ping"></span>
+          <span>SATELLITE TRUCK RADAR</span>
+        </div>
+        <h2 class="font-display text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-none mb-4">
+          WHERE TO FIND US THIS WEEK.
+        </h2>
+        <p class="text-gray-400 font-body text-sm max-w-xl mx-auto">
+          We move through LA's legendary neighborhoods. Follow the radar below or subscribe to instant SMS drop alerts.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <!-- Interactive Radar Canvas Map Box -->
+        <div class="lg:col-span-7 relative bg-card border border-white/10 rounded-3xl p-4 overflow-hidden h-[450px] flex flex-col">
+          <div class="flex items-center justify-between mb-3 px-2">
+            <span class="font-mono text-xs text-yellow uppercase tracking-widest flex items-center gap-2">
+              <i data-lucide="radio" class="w-4 h-4 text-green animate-pulse"></i>
+              LA RADAR FREQUENCY: 104.2 MHZ
+            </span>
+            <span class="font-mono text-[10px] text-gray-400 uppercase">GPS LOC: 34.0407° N, 118.2468° W</span>
+          </div>
+
+          <div class="relative flex-1 rounded-2xl overflow-hidden border border-white/10">
+            <!-- Radar Canvas Animation -->
+            <canvas id="radar-canvas" class="w-full h-full bg-black"></canvas>
+            
+            <!-- Radar Map Overlay Pin Cards -->
+            <div class="absolute bottom-4 left-4 right-4 bg-black/80 backdrop-blur-md p-4 rounded-xl border border-white/10 flex items-center justify-between text-xs font-mono">
+              <div>
+                <span class="text-green uppercase font-bold block mb-0.5">CURRENT ACTIVE STOP:</span>
+                <span class="text-white text-sm font-bold">Arts District Warehouse Yard (7PM - 2AM)</span>
+              </div>
+              <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="bg-green text-black px-3 py-1.5 rounded font-bold uppercase hover:scale-105 transition-transform">
+                Get GPS Route
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weekly Schedule List Cards -->
+        <div class="lg:col-span-5 space-y-4">
+          
+          <!-- Stop 1 (Tonight - Active) -->
+          <div class="schedule-card active bg-card border-2 border-green/60 p-5 rounded-2xl relative overflow-hidden flex items-center justify-between">
+            <div>
+              <span class="bg-green/20 text-green font-mono text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider mb-2 inline-block">
+                TONIGHT • LIVE NOW
+              </span>
+              <h4 class="font-display text-xl font-bold text-white">Arts District Warehouse</h4>
+              <span class="font-mono text-xs text-gray-400 block mt-1">702 Mateo St, Los Angeles • 7:00 PM – 2:00 AM</span>
+            </div>
+            <i data-lucide="navigation-2" class="w-6 h-6 text-green animate-bounce"></i>
+          </div>
+
+          <!-- Stop 2 -->
+          <div class="schedule-card bg-card border border-white/10 p-5 rounded-2xl hover:border-yellow/50 transition-colors flex items-center justify-between">
+            <div>
+              <span class="bg-white/10 text-yellow font-mono text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider mb-2 inline-block">
+                TOMORROW (FRIDAY)
+              </span>
+              <h4 class="font-display text-xl font-bold text-white">Melrose & Fairfax Corner</h4>
+              <span class="font-mono text-xs text-gray-400 block mt-1">7800 Melrose Ave • 11:00 AM – 6:00 PM</span>
+            </div>
+            <span class="font-mono text-xs text-gray-500">SCHEDULED</span>
+          </div>
+
+          <!-- Stop 3 -->
+          <div class="schedule-card bg-card border border-white/10 p-5 rounded-2xl hover:border-blue/50 transition-colors flex items-center justify-between">
+            <div>
+              <span class="bg-white/10 text-blue font-mono text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider mb-2 inline-block">
+                SATURDAY NIGHT
+              </span>
+              <h4 class="font-display text-xl font-bold text-white">Venice Beach Boardwalk</h4>
+              <span class="font-mono text-xs text-gray-400 block mt-1">Windward Ave & Ocean Front • 12:00 PM – 10:00 PM</span>
+            </div>
+            <span class="font-mono text-xs text-gray-500">SCHEDULED</span>
+          </div>
+
+          <!-- Stop 4 -->
+          <div class="schedule-card bg-card border border-white/10 p-5 rounded-2xl hover:border-orange/50 transition-colors flex items-center justify-between">
+            <div>
+              <span class="bg-white/10 text-orange font-mono text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wider mb-2 inline-block">
+                SUNDAY STREET MARKET
+              </span>
+              <h4 class="font-display text-xl font-bold text-white">Echo Park Lake Park</h4>
+              <span class="font-mono text-xs text-gray-400 block mt-1">751 Glendale Blvd • 11:00 AM – 8:00 PM</span>
+            </div>
+            <span class="font-mono text-xs text-gray-500">SCHEDULED</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- SMS Alert Subscription Banner -->
+      <div class="mt-16 bg-gradient-to-r from-orange/20 via-yellow/10 to-red/20 border border-orange/40 rounded-3xl p-8 text-center max-w-3xl mx-auto">
+        <span class="font-mono text-xs text-yellow uppercase tracking-widest block mb-2">⚡ SECRET LA DROP NOTIFICATIONS</span>
+        <h3 class="font-display text-3xl font-extrabold text-white mb-4">GET TEXTED 10 MINUTES BEFORE WE PARK</h3>
+        <form id="sms-form" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <input type="tel" id="sms-input" required placeholder="(310) 555-0199" class="flex-1 bg-black/80 border border-white/20 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-yellow font-mono" />
+          <button type="submit" class="bg-orange hover:bg-yellow text-black font-extrabold text-xs uppercase tracking-widest px-6 py-3 rounded-xl transition-all hover:scale-105">
+            GET DROPS
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION 8: SECRET VIP PASS & FOOTER ================= -->
+  <section id="secret-pass" class="py-24 px-6 md:px-12 bg-black border-t border-white/10 relative">
+    <div class="max-w-5xl mx-auto text-center">
+      
+      <div class="inline-flex items-center gap-2 text-yellow font-mono text-xs uppercase tracking-widest mb-3">
+        <span class="w-8 h-0.5 bg-yellow"></span>
+        <span>SECRET MENU ACCESS</span>
+      </div>
+
+      <h2 class="font-display text-4xl sm:text-6xl font-extrabold text-white mb-6">
+        GENERATE YOUR DIGITAL SECRET PASS
+      </h2>
+
+      <p class="text-gray-400 text-sm md:text-base font-body max-w-xl mx-auto mb-10">
+        Show this custom digital ticket at the order window for 1 FREE Secret Sauce Dip & priority line skip pass.
+      </p>
+
+      <!-- VIP Pass Generator Box -->
+      <div class="bg-card border border-white/20 rounded-3xl p-8 max-w-xl mx-auto shadow-2xl relative overflow-hidden">
+        
+        <div class="space-y-4 text-left mb-6">
+          <div>
+            <label class="block font-mono text-xs text-gray-300 uppercase mb-1">Your Name for the Ticket</label>
+            <input type="text" id="pass-name-input" value="LA FOODIE #1" class="w-full bg-black/70 border border-white/20 rounded-xl px-4 py-3 text-white font-mono text-sm focus:outline-none focus:border-yellow" />
+          </div>
+          <div>
+            <label class="block font-mono text-xs text-gray-300 uppercase mb-1">Select Favorite Sauce</label>
+            <select id="pass-sauce-select" class="w-full bg-black/70 border border-white/20 rounded-xl px-4 py-3 text-white font-mono text-sm focus:outline-none focus:border-yellow">
+              <option value="SECRET ORANGE SAUCE">Secret Orange Sauce</option>
+              <option value="GHOST PEPPER AIOLI">Ghost Pepper Aioli</option>
+              <option value="SMOKED CAJETA CARAMEL">Smoked Cajeta Caramel</option>
+              <option value="GARLIC CHILI CREMA">Garlic Chili Crema</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Rendered Ticket Card -->
+        <div id="rendered-ticket" class="bg-gradient-to-br from-gray-900 to-black border-2 border-yellow rounded-2xl p-6 text-left relative shadow-2xl">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <span class="font-mono text-[10px] text-yellow uppercase tracking-widest block">WORD OF MOUTH VIP PASS</span>
+              <h4 id="ticket-name-display" class="font-display text-2xl font-bold text-white uppercase">LA FOODIE #1</h4>
+            </div>
+            <span class="bg-red text-white font-marker text-xs px-3 py-1 rounded uppercase">
+              VALID '26
+            </span>
+          </div>
+
+          <div class="border-y border-dashed border-white/20 py-3 my-3 font-mono text-xs text-gray-300 flex justify-between">
+            <span>PERK: FREE SAUCE DIP</span>
+            <span id="ticket-sauce-display" class="text-yellow font-bold">SECRET ORANGE SAUCE</span>
+          </div>
+
+          <div class="flex items-center justify-between pt-2">
+            <span class="font-mono text-[10px] text-gray-500">TICKET ID: WOM-849201-LA</span>
+            <div class="font-mono text-xl font-bold tracking-widest text-white">|||| | ||||| ||||</div>
+          </div>
+        </div>
+
+        <button id="download-pass-btn" class="mt-6 w-full bg-gradient-to-r from-orange to-yellow text-black font-extrabold text-xs uppercase tracking-widest py-3.5 rounded-xl transition-all hover:scale-105">
+          Save VIP Secret Pass
+        </button>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer id="footer" class="bg-black py-12 px-6 md:px-12 border-t border-white/10 text-gray-400 font-mono text-xs">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+      <div>
+        <div class="flex items-center justify-center md:justify-start gap-2 text-white font-display text-xl font-bold mb-2">
+          <div class="w-6 h-6 bg-orange rounded flex items-center justify-center text-black font-extrabold text-xs">WM</div>
+          <span>WORD OF MOUTH LOS ANGELES</span>
+        </div>
+        <p class="text-gray-500 text-[11px]">
+          © 2026 WORD OF MOUTH LA INC. ALL RIGHTS RESERVED. NO RESERVATIONS REQUIRED.
+        </p>
+      </div>
+
+      <!-- Live LA Clock -->
+      <div class="bg-white/5 border border-white/10 px-4 py-2 rounded-xl text-yellow font-mono text-xs">
+        <span>LA LOCAL TIME: </span>
+        <span id="la-clock" class="font-bold">--:--:-- PST</span>
+      </div>
+
+      <!-- Social Links -->
+      <div class="flex items-center gap-4">
+        <a href="#" class="hover:text-orange transition-colors">INSTAGRAM</a>
+        <a href="#" class="hover:text-yellow transition-colors">TIKTOK</a>
+        <a href="#" class="hover:text-blue transition-colors">X / TWITTER</a>
+        <a href="#hero" class="hover:text-white transition-colors flex items-center gap-1 text-green">
+          <span>TOP</span>
+          <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript File -->
+  <script type="module" src="/script.js"></script>
+
+</body>
+</html>
